@@ -5,14 +5,17 @@
 #ifndef CXXIO_FILE_H
 #define CXXIO_FILE_H
 
+#include <dirent.h>
+
 #include <string>
 #include <fstream>
 #include <memory>
 #include <exception>
+#include <iostream>
 
 #include "bxzstr.hpp"
 
-namespace File {
+namespace cxxio {
   namespace exceptions {
     struct file_exception : public std::exception {
       std::string msg;
@@ -26,8 +29,12 @@ namespace File {
     struct cannot_read_from_file : public file_exception {
       cannot_read_from_file(std::string name) : file_exception("Cannot read from file: " + name + ".") {}
     };
+    struct directory_does_not_exist : public file_exception {
+      directory_does_not_exist(std::string dirpath) : file_exception("Directory " + dirpath + " does not exist.") {}
+    };
   }
 
+namespace File {
   class Out {
     std::unique_ptr<std::ostream> byname;
     std::ostream os;
@@ -128,6 +135,16 @@ namespace File {
     }
     return is;
   }
+}
+
+void directory_exists(const std::string &dir_path) {
+  DIR* dir = opendir(dir_path.c_str());
+  if (dir) {
+    closedir(dir);
+  } else {
+    throw exceptions::directory_does_not_exist(dir_path);
+  }
+}
 }
 
 #endif
