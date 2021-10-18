@@ -1,12 +1,14 @@
-#ifndef FILE_H
-#define FILE_H
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#ifndef CXXIO_FILE_H
+#define CXXIO_FILE_H
 
 #include <string>
 #include <fstream>
 #include <memory>
 #include <exception>
-#include <iostream>
-#include <sstream>
 
 #include "bxzstr.hpp"
 
@@ -57,6 +59,9 @@ namespace File {
       byname.reset();
       os.rdbuf(std::cout.rdbuf());
       os.setstate(std::cout.rdstate());
+    }
+    void flush() {
+      os.flush();
     }
     std::ostream& stream() { return this->os; }
     const std::string& filename() const { return this->myfile; }
