@@ -138,7 +138,7 @@ In& operator>>(In &is, T &t) {
   return is;
 }
 
-void directory_exists(const std::string &dir_path) {
+inline void directory_exists(const std::string &dir_path) {
   DIR* dir = opendir(dir_path.c_str());
   if (dir) {
     closedir(dir);
