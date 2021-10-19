@@ -2,8 +2,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef CXXIO_FILE_H
-#define CXXIO_FILE_H
+#ifndef CXXIO_FILE_HPP
+#define CXXIO_FILE_HPP
 
 #include <dirent.h>
 
@@ -16,25 +16,23 @@
 #include "bxzstr.hpp"
 
 namespace cxxio {
-  namespace exceptions {
-    struct file_exception : public std::exception {
-      std::string msg;
-      virtual ~file_exception() override = default;
-      file_exception(std::string msg) : msg(msg) {}
-      const char* what() const noexcept override { return msg.c_str(); }
-    };
-    struct file_not_writable : public file_exception {
-      file_not_writable(std::string name) : file_exception("File " + name + " is not writable (does the directory exist?).") {}
-    };
-    struct cannot_read_from_file : public file_exception {
-      cannot_read_from_file(std::string name) : file_exception("Cannot read from file: " + name + ".") {}
-    };
-    struct directory_does_not_exist : public file_exception {
-      directory_does_not_exist(std::string dirpath) : file_exception("Directory " + dirpath + " does not exist.") {}
-    };
-  }
-
-namespace File {
+namespace exceptions {
+  struct file_exception : public std::exception {
+    std::string msg;
+    virtual ~file_exception() override = default;
+    file_exception(std::string msg) : msg(msg) {}
+    const char* what() const noexcept override { return msg.c_str(); }
+  };
+  struct file_not_writable : public file_exception {
+    file_not_writable(std::string name) : file_exception("File " + name + " is not writable (does the directory exist?).") {}
+  };
+  struct cannot_read_from_file : public file_exception {
+    cannot_read_from_file(std::string name) : file_exception("Cannot read from file: " + name + ".") {}
+  };
+  struct directory_does_not_exist : public file_exception {
+    directory_does_not_exist(std::string dirpath) : file_exception("Directory " + dirpath + " does not exist.") {}
+  };
+}
   class Out {
     std::unique_ptr<std::ostream> byname;
     std::ostream os;
