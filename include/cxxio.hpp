@@ -53,9 +53,9 @@ public:
     if (!os)
       throw exceptions::file_not_writable(filename);
   }
-  void open_compressed(const std::string &filename) {
+  void open_compressed(const std::string &filename, const bxz::Compression &type, const int level = 6) {
     os.flush();
-    byname.reset(new bxz::ofstream(filename));
+    byname.reset(new bxz::ofstream(filename, type, level));
     os.rdbuf(byname->rdbuf());
     os.setstate(byname->rdstate());
     if (!os)
